@@ -8,8 +8,13 @@ library('mice') # imputation
 library('randomForest') # classification algorithm
 library(crayon) # pacote de colorir o texto
 
-train <- read.csv('data/train.csv', stringsAsFactors = F)
-test <- read.csv('data/test.csv', stringsAsFactors = F)
+cat_yellow = function(msg) {
+  cat(yellow(msg))
+  cat('\n')
+}
+
+train <- read.csv('/home/josue/Codes/R/R_Projects/Titanic/data/train.csv', stringsAsFactors = F)
+test <- read.csv('/home/josue/Codes/R/R_Projects/Titanic/data/test.csv', stringsAsFactors = F)
 
 full  <- bind_rows(train, test) # junta os dados de treinamento e teste
 
@@ -42,3 +47,20 @@ cat(yellow('Por fim, pegue o sobrenome do nome do passageiro \n'))
 full$Surname <- sapply(full$Name, function(x) strsplit(x, split = '[,.]')[[1]][1])
 
 cat(paste('We have <b>', nlevels(factor(full$Surname)), '</b> unique surnames. I would be interested to infer ethnicity based on surname --- another time.'))
+
+cat(green('\n\n*********** As famílias afundam ou nadam juntas? ***************\n'))
+
+# Criando uma variável de tamanho familiar incluindo o próprio passageiro'
+full$Fsize <- full$SibSp + full$Parch + 1
+
+# criando uma variavel de
+full$Family <- paste(full$Surname, full$Fsize, sep='_')
+
+#  ggplot2 para visualizar a relação entre tamanho da família e sobrevivência
+g1 <- ggplot(full[1:891,], aes(x = Fsize, fill = factor(Survived))) +
+  geom_bar(stat='count', position='dodge') +
+  scale_x_continuous(breaks=c(1:11)) +
+  labs(x = 'Family Size') +
+  theme_few()
+
+plot(g1)
