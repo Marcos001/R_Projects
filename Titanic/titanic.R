@@ -56,11 +56,22 @@ full$Fsize <- full$SibSp + full$Parch + 1
 # criando uma variavel de
 full$Family <- paste(full$Surname, full$Fsize, sep='_')
 
-#  ggplot2 para visualizar a relação entre tamanho da família e sobrevivência
-g1 <- ggplot(full[1:891,], aes(x = Fsize, fill = factor(Survived))) +
-  geom_bar(stat='count', position='dodge') +
-  scale_x_continuous(breaks=c(1:11)) +
-  labs(x = 'Family Size') +
-  theme_few()
+cat('\n full$Fsize = ', full$Fsize, '\n ')
+cat('full$Family = ', full$Family,'\n')
 
-plot(g1)
+cat(length(full$Family), ' and ', length(full$Fsize))
+
+for (i in 1:length(full$Family)){
+  cat(i,' .....: ', full$Family[i], '\n')
+}
+
+#  ggplot2 para visualizar a relação entre tamanho da família e sobrevivência
+#ggplot(full[1:891,], aes(x = Fsize, fill = factor(Survived))) +
+#  geom_bar(stat='count', position='dodge') +
+#  scale_x_continuous(breaks=c(1:11)) +
+#  labs(x = 'Family Size') +
+#  theme_few()
+
+
+
+
